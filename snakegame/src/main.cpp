@@ -15,37 +15,22 @@ void fonksiyon1 () {
     {
         girdi = getchar();
         a = girdi ;
-
         if (a == 'q')
         {
-            
             whileboole = false ;
-        }
-        
+        }   
     }
-
-
     tcsetattr(STDIN_FILENO, TCSANOW, &oldSettings); 
-
 }
 
 void fonksiyon2 ()  {Oyna(&a);}
 
-
-
 int main (int argc , char**argv)
 {
-
     std::thread t1(fonksiyon1) ; 
     std::thread t2(fonksiyon2) ;
 
     t1.join() ;
     t2.detach() ;
-
     return 0 ;
 }
-
-
-        //std::thread t1(fonksiyon1) ; //t1 starts running 
-        // t1.join(); //main thread waits for t1 to finish 
-        //t1.detach(); //t1 özgür olarak çalışır -- daemon process
