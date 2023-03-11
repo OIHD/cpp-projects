@@ -1,36 +1,31 @@
 #include "Oyna.hpp"
 
-
 const int genislik = 20 , yukseklik = 20 ;
 int indexakonumyatay = genislik/2 , indexakonumdikey = yukseklik/2 , asayac = 0 , yilanboyutu = 1
 , turbekle = 0 , haritadaelmasayisi=0 , elmax=0 , elmay=0 , 
 gamespeed = 1;
 bool baslangic = 1, oyundevam = 1 , blokkoyuldu = 0;
-
+char sontus = 'w';
 int yilanxkonum[genislik] = {};
 int yilanykonum[yukseklik] = {};
-
 
 void Oyna(char* input )
 {
 while(oyundevam){ ++asayac;
-srand(time(nullptr)); // Başlangıç değerini zamanla belirler
+srand(time(nullptr));
             if (haritadaelmasayisi==0)
             {
                 ++haritadaelmasayisi ;
-                elmax = rand() % genislik; 
-                elmay = rand() % yukseklik;
+                elmax = 1+(rand() % (genislik-1)); 
+                elmay = 1+(rand() % (yukseklik-1));
             }
             if (elmax == indexakonumyatay && elmay==indexakonumdikey)
             {
                 --haritadaelmasayisi;
-                elmax = 1;
-                elmay = 1;
+                elmax = 0;
+                elmay = 0;
                 ++yilanboyutu;
             }
-            
-            
-            
             if (asayac >= yilanboyutu)
             asayac = 0 ;
             
@@ -39,20 +34,17 @@ srand(time(nullptr)); // Başlangıç değerini zamanla belirler
 
             for (size_t i = 0; i < yilanboyutu; i++)
             {
-                if (yilanxkonum[i] == indexakonumyatay && yilanykonum[i] == indexakonumdikey)
+                if (yilanxkonum[asayac+1] == indexakonumyatay && yilanykonum[asayac+1] == indexakonumdikey )
                 {
-                    //oyundevam = 0;
-                }
-                
+                    oyundevam = 0; // bu kısım düzenlenecek yılanın kendine çarpması mekaniği eklenecek 
+                }   
             }
 
 for (size_t yuksekligi = 1; yuksekligi < yukseklik; yuksekligi++)
     {
     std::cout << "\n" ; 
-
     for (size_t genisligi = 1; genisligi < genislik; genisligi++)
         {
-
                 for (size_t i = 0; i < yilanboyutu; i++)
                 {
                 if (genisligi == yilanxkonum[i] && yuksekligi == yilanykonum[i] && blokkoyuldu == 0)
@@ -73,25 +65,28 @@ for (size_t yuksekligi = 1; yuksekligi < yukseklik; yuksekligi++)
                 blokkoyuldu = 0 ;
         }
     }
-
 switch (*input)
                         {
                         case 'w':
                             --indexakonumdikey;
+                            sontus = 'w';
                             break;
                         case 's':
                             ++indexakonumdikey;
+                            sontus = 's';
                             break;
                         case 'a':
+                            sontus = 'a';
                             --indexakonumyatay;
                             break;
                         case 'd':
+                            sontus = 'd';
                             ++indexakonumyatay;
                             break;
                         default:
+                            *input = sontus ;
                             break;
                         }
-
 if (indexakonumyatay<=0||indexakonumyatay>=genislik||indexakonumdikey<=0||indexakonumdikey>=yukseklik)
     oyundevam = 0;
 std::cout << "\n" << "son harf girdisi : "<< *input << "\n";
@@ -100,9 +95,8 @@ std::cout << "\n" << "Toplam Donguler : "<< asayac << "\n";
 std::cout <<  "1x :"<< yilanxkonum[1] << " 1y :" << yilanykonum[1] ;
 std::cout <<  " |2x :"<< yilanxkonum[2] << " 2y: " << yilanykonum[2] ;
 std::cout <<  " |3x :"<< yilanxkonum[3] << " 3y: " << yilanykonum[3] << "\n";
+std::cout << "\n" << "ex : "<< elmax << "ey : " << elmay << "\n";
 usleep(gamespeed*90000);
 system("clear");}//WHİLE
-
-
 std::cout << "---------------------------- OYUN BITTI ----------------------------"<<std::endl ;
 }
