@@ -1,7 +1,7 @@
 #include "Oyna.hpp"
 
-char girdi = 't' ;
-char a = 't';
+char girdi = 'w' ;
+char a = 'w';
 void fonksiyon1 () {
     char girdi;
     struct termios oldSettings, newSettings;

@@ -6,6 +6,8 @@
 #include<unistd.h>  
 #include <cstdlib> 
 #include <string.h>
+#include <cstdlib>//rand
+#include <ctime>//rand sayı için
 #include <sys/select.h>
 #include <termios.h>
 #include <fcntl.h>
