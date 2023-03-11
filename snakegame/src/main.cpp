@@ -1,94 +1,51 @@
-#include <iostream>
-#include <thread>
-#include <unistd.h>
-#include <cstdlib> 
-#include <string.h>
+#include "Oyna.hpp"
 
-#include <sys/select.h>
-#include <termios.h>
-#include <fcntl.h>
-//-----MAIN----------
-int main (int argc , char**argv)
-{
-const int genislik = 60 , yukseklik = 20 ;
-int indexakonumyatay = 30 , indexakonumdikey = 10 , asayac = 1 ;
-bool keyboardw = 0 , keyboarda = 0 , keyboards = 0 , keyboardd = 0 , oyundevam = 1 ;
-char sondugme = 's' ;
-//------------------------------------------------
+char girdi = 't' ;
+char a = 't';
+void fonksiyon1 () {
+    char girdi;
+    struct termios oldSettings, newSettings;
+    tcgetattr(STDIN_FILENO, &oldSettings); // terminal ayarlarını al
+    newSettings = oldSettings;
+    newSettings.c_lflag &= ~(ICANON | ECHO); // terminal ayarlarını değiştir
+    tcsetattr(STDIN_FILENO, TCSANOW, &newSettings); 
 
-
-  
-
-
-
-
-while(oyundevam){
-
-for (size_t yuksekligi = 0; yuksekligi < yukseklik; yuksekligi++)
+    bool whileboole = true ;
+    while (whileboole)
     {
-    std::cout << "\n" ; 
+        girdi = getchar();
+        a = girdi ;
 
-    for (size_t genisligi = 0; genisligi < genislik; genisligi++)
+        if (a == 'q')
         {
-            if (genisligi == indexakonumyatay && indexakonumdikey == yuksekligi)
-            {
-
-
-
-
-
-                    //-----------------------------------------
-                    /*
-                        switch (input)
-                        {
-                        case "w":
-                            keyboardw = 1  ;
-                            ++indexakonumdikey ;
-                        case "a":
-                            keyboarda = 1 ;
-                            --indexakonumyatay;
-                        case "s":
-                            keyboards = 1 ;
-                            --indexakonumdikey;
-                        case "d":
-                            keyboardd = 1 ;
-                            ++indexakonumyatay;
-
-                            break;
-                        
-                        default:
-                            break;
-                        }
-
-
-
-                    */
-                    //-----------------------------------------
-
-
-                std::cout << "▓" ;
-                std::cout.flush();
-            }
-            else        
-                std::cout << "░" ;
+            
+            whileboole = false ;
         }
+        
     }
 
-if (indexakonumyatay<=0||indexakonumyatay>=genislik||indexakonumdikey<=0||indexakonumdikey>=yukseklik)
-    oyundevam = 0;
 
-usleep(100000);
-std::cout << "\033[2J\033[1;1H"; // Ekrandaki içeriği temizler
-}//WHİLE
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldSettings); 
 
-
-
-
-
-
-std::cout << "--------------------------------------------------------------------"<<std::endl ;
-std::cout << "---------------------------- OYUN BITTI ----------------------------"<<std::endl ;
-std::cout << "--------------------------------------------------------------------"<<std::endl ;
-//input_thread.join();
-return 0 ;
 }
+
+void fonksiyon2 ()  {Oyna(&a);}
+
+
+
+int main (int argc , char**argv)
+{
+
+    std::thread t1(fonksiyon1) ; 
+    std::thread t2(fonksiyon2) ;
+
+    t1.join() ;
+    t2.detach() ;
+
+    return 0 ;
+}
+
+
+        //std::thread t1(fonksiyon1) ; //t1 starts running 
+        // t1.join(); //main thread waits for t1 to finish 
+        //t1.detach(); //t1 özgür olarak çalışır -- daemon process
