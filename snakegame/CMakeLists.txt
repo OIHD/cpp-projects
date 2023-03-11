@@ -1,4 +1,4 @@
-project(snakegame) 
+project(multitasktest) 
 
 set(PROJECT_DIR ${CMAKE_SOURCE_DIR})
 
@@ -7,7 +7,7 @@ set(PROJECT_INCLUDE_DIR ${PROJECT_DIR}/include)
 set(PROJECT_SOURCE_DIR ${PROJECT_DIR}/src)
 
 set(PROJECT_SOURCES
-            ${PROJECT_SOURCE_DIR}/kutuphane.cpp
+            ${PROJECT_SOURCE_DIR}/Oyna.cpp
             ${PROJECT_SOURCE_DIR}/main.cpp)
 
 set(PROJECT_HEADERS
