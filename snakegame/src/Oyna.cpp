@@ -2,7 +2,7 @@
 
 const int genislik = 20 , yukseklik = 20 ;
 int indexakonumyatay = genislik/2 , indexakonumdikey = yukseklik/2 , asayac = 0 , yilanboyutu = 1
-, turbekle = 0 , haritadaelmasayisi=0 , elmax=0 , elmay=0 , cakisma=0 , elmaskor=0 , oyunhizi ,
+, turbekle = 0 , haritadaelmasayisi=0 , elmax=0 , elmay=0 , cakisma=0 , elmaskor=0 , oyunhizi , otorestart = 0 ,
 gamespeed = 1;
 bool baslangic = 1, oyundevam = 1 , blokkoyuldu = 0;
 char sontus = 'w';
@@ -11,6 +11,7 @@ int yilanykonum[yukseklik] = {};
 
 void Oyna(char* input )
 {
+basla:
 while(oyundevam){ ++asayac;
 srand(time(nullptr));
 oyunhizi = (gamespeed*110000)-((elmaskor+1)*5000);
@@ -84,20 +85,20 @@ for (size_t yuksekligi = 1; yuksekligi < yukseklik; yuksekligi++)
 switch (*input)
                         {
                         case 'w':
-                            --indexakonumdikey;
-                            sontus = 'w';
+                            if(sontus=='s'){++indexakonumdikey;}else{
+                            --indexakonumdikey;sontus = 'w';}
                             break;
                         case 's':
-                            ++indexakonumdikey;
-                            sontus = 's';
+                            if(sontus=='w'){--indexakonumdikey;}else{
+                            ++indexakonumdikey;sontus = 's';}
                             break;
                         case 'a':
-                            sontus = 'a';
-                            --indexakonumyatay;
+                            if(sontus=='d'){++indexakonumyatay;}else{
+                            sontus = 'a';--indexakonumyatay;}
                             break;
                         case 'd':
-                            sontus = 'd';
-                            ++indexakonumyatay;
+                            if(sontus=='a'){--indexakonumyatay;}else{
+                            sontus = 'd';++indexakonumyatay;}
                             break;
                         default:
                             *input = sontus ;
@@ -117,5 +118,36 @@ for (size_t yuksekligi = 1; yuksekligi < yukseklik; yuksekligi++)
         }
     }
     std::cout << "\n" << "- Toplam skor " << elmaskor*100 <<" -"<< "\n";
-    std::cout << "\n" << "- cikmak icin 2 kere 'q' ya basın -"<< "\n";
+    std::cout << "\n" << "- cikmak icin 'q' ya basın -"<< "\n";
+        while (!oyundevam)
+    {
+        if (otorestart)
+        {
+        otorestart =0;
+        indexakonumyatay = genislik/2 , indexakonumdikey = yukseklik/2 , asayac = 0 , yilanboyutu = 1
+        , turbekle = 0 , haritadaelmasayisi=0 , elmax=0 , elmay=0 , cakisma=0 , elmaskor=0 , oyunhizi ,
+        gamespeed = 1;
+        baslangic = 1, oyundevam = 1 , blokkoyuldu = 0;
+        sontus = 'w';
+        for (size_t i = 0; i < genislik; i++)
+        {
+            yilanxkonum[i] = {};
+        }
+        for (size_t i = 0; i < genislik; i++)
+        {
+            yilanykonum[i] = {};
+        }
+            system("clear");
+            goto basla ;
+        }
+        else
+        {
+            for (int i = 3; i >= 0; --i) {
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+                std::cout<<"\n - oto restart "<< i <<" saniye içinde olcak -";
+                otorestart=1;
+             }
+        }
+        usleep(100000);
+    }
 }
